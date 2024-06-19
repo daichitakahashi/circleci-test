@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"testing"
+
+	_ "github.com/k1LoW/runn"
+)
 
 func TestSample(t *testing.T) {
 	t.Log("Test Sample!")
