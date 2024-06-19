@@ -15,6 +15,12 @@ jobs:
           keys:
             - go-dependencies-{{ checksum "go.sum" }}
       - run:
+          name: Install Firebase Emulator
+          command: curl -sL firebase.tools | bash
+      - run:
+          name: Firebase Emulator help
+          command: firebase -h
+      - run:
           name: Go mod download
           command: go mod download
       - run:
@@ -27,8 +33,6 @@ jobs:
             - /home/circleci/go/pkg/mod # GOMODCACHE (module cache)
             - /home/circleci/.cache/go-build # GOCACHE (build cache)
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   example:
     jobs:
