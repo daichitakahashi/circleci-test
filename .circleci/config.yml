@@ -27,7 +27,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          name: Restore Go Caches
+          name: Restore Go caches
           keys:
             - go-dependencies-{{ checksum "go.sum" }}
       - run:
