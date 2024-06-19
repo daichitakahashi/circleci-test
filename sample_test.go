@@ -7,5 +7,5 @@ import (
 )
 
 func TestSample(t *testing.T) {
-	t.Log("Test Sample!!")
+	Say()
 }
