@@ -31,6 +31,8 @@ jobs:
       - run:
           name: Go test
           command: ./test-ci.sh
+          environment:
+            DSN: root:password@tcp(127.0.0.1:3306)/
       - save_cache:
           name: Save Go caches
           key: go-dependencies-{{ checksum "go.sum" }}
