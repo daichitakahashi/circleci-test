@@ -25,18 +25,23 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/jobs-steps/#steps-overview & https://circleci.com/docs/configuration-reference/#steps
     steps:
-      # Checkout the code as the first step.
       - checkout
-      # Replace this with a real test runner invocation
-      - go/load-cache
-      - go/mod-download
+      - restore_cache:
+          name: Restore Go Caches
+          keys:
+            - go-dependencies-{{ checksum "go.sum" }}
       - run:
-          name: Show go envs
-          command: go env
+          name: Go mod download
+          command: go mod download
       - run:
           name: Go test
           command: go test . -v
-      - go/save-cache
+      - save_cache:
+          name: Save Go caches
+          key: go-dependencies-{{ checksum "go.sum" }}
+          paths:
+            - /home/circleci/go/pkg/mod # GOMODCACHE (module cache)
+            - /home/circleci/.cache/go-build # GOCACHE (build cache)
   # build:
   #   docker:
   #     - image: cimg/base:current
