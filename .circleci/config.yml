@@ -31,8 +31,8 @@ jobs:
       - go/load-cache
       - go/mod-download
       - run:
-        name: Go test
-        command: go test . -v
+          name: Go test
+          command: go test . -v
       - go/save-cache
   # build:
   #   docker:
