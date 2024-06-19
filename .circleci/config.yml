@@ -14,7 +14,7 @@ jobs:
   test:
     executor:
       name: go/default
-      tag: '1.21.1'
+      tag: '1.22.4'
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/executor-intro/ & https://circleci.com/docs/configuration-reference/#executor-job
     # docker:
