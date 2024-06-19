@@ -1,60 +1,23 @@
 version: 2.1
 
-jobs:
-  test:
-    docker:
-      - image: cimg/go:1.22.4
-      - image: cimg/mysql:8.0
-        environment:
-          MYSQL_USER: db_user
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: test
-    steps:
-      - checkout
-      - restore_cache:
-          name: Restore Go caches
-          keys:
-            - go-dependencies-{{ checksum "go.sum" }}
-      - run:
-          name: Install Firebase Emulator
-          command: curl -sL firebase.tools | bash
-      - run:
-          name: Go mod download
-          command: go mod download
-      - run:
-          name: Install dockerize
-          command: curl -L https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-amd64-v0.7.0.tar.gz | tar xzf -
-      - run:
-          name: Wait for MySQL
-          command: ./dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
-      - run:
-          name: Go test
-          command: ./test-ci.sh
-          environment:
-            DSN: root:password@tcp(127.0.0.1:3306)/
-      - save_cache:
-          name: Save Go caches
-          key: go-dependencies-{{ checksum "go.sum" }}
-          paths:
-            - /home/circleci/go/pkg/mod # GOMODCACHE (module cache)
-            - /home/circleci/.cache/go-build # GOCACHE (build cache)
-      - store_artifacts:
-          path: coverage.html
-      - store_test_results:
-          path: test-results.xml
+setup: true
+
+orbs:
+  path-filtering: circleci/path-filtering@1.0.0
 
 workflows:
-  example:
+  always-run:
     jobs:
-      - test:
-          filters:
-            branches:
-              only:
-                - main
-      # - build:
-      #     requires:
-      #       - test
-      # - deploy:
-      #     requires:
-      #       - test
+      - path-filtering/filter:
+          name: check-updated-go-files
+          # 3-column, whitespace-delimited mapping. One mapping per
+          # line:
+          # <regex path-to-test> <parameter-to-set> <value-of-pipeline-parameter>
+          mapping: |
+            ^.*\.go$ run-go-test true
+          base-revision: main
+          # this is the path of the configuration we should trigger once
+          # path filtering and pipeline parameter value updates are
+          # complete. In this case, we are using the parent dynamic
+          # configuration itself.
+          config-path: .circleci/test_config.yml
