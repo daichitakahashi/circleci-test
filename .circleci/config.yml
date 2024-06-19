@@ -31,6 +31,9 @@ jobs:
       - go/load-cache
       - go/mod-download
       - run:
+          name: Show go envs
+          command: go env
+      - run:
           name: Go test
           command: go test . -v
       - go/save-cache
@@ -59,7 +62,11 @@ jobs:
 workflows:
   example:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              only:
+                - main
       # - build:
       #     requires:
       #       - test
