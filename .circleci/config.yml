@@ -1,13 +1,15 @@
 version: 2.1
 
-orbs:
-  go: circleci/go@1.11.0
-
 jobs:
   test:
-    executor:
-      name: go/default
-      tag: '1.22.4'
+    docker:
+      - image: cimg/go:1.22.4
+      - image: cimg/mysql:8.0
+        environment:
+          MYSQL_USER: db_user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test
     steps:
       - checkout
       - restore_cache:
@@ -26,6 +28,9 @@ jobs:
       - run:
           name: Go test
           command: go test . -v
+      - run:
+          name: Check mysql CLI
+          command: mysql --help
       - save_cache:
           name: Save Go caches
           key: go-dependencies-{{ checksum "go.sum" }}
