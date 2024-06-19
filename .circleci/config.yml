@@ -28,6 +28,9 @@ jobs:
       - run:
           name: Go test
           command: go test . -v
+      - run:
+          name: Check mysql CLI
+          command: mysql --help
       - save_cache:
           name: Save Go caches
           key: go-dependencies-{{ checksum "go.sum" }}
