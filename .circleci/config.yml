@@ -20,17 +20,17 @@ jobs:
           name: Install Firebase Emulator
           command: curl -sL firebase.tools | bash
       - run:
-          name: Firebase Emulator help
-          command: firebase -h
-      - run:
           name: Go mod download
           command: go mod download
       - run:
           name: Go test
           command: go test . -v
       - run:
-          name: Check mysql CLI
-          command: mysql --help
+          name: Install dockerize
+          command: curl -L https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-amd64-v0.7.0.tar.gz | tar xzf -
+      - run:
+          name: Wait for MySQL
+          command: ./dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
       - save_cache:
           name: Save Go caches
           key: go-dependencies-{{ checksum "go.sum" }}
