@@ -39,6 +39,8 @@ jobs:
             - /home/circleci/.cache/go-build # GOCACHE (build cache)
       - store_artifacts:
           path: coverage.html
+      - store_test_results:
+          path: test-results.xml
 
 workflows:
   example:
