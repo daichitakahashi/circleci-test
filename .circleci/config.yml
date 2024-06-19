@@ -9,12 +9,12 @@ workflows:
   always-run:
     jobs:
       - path-filtering/filter:
-          name: check-updated-files
+          name: check-updated-go-files
           # 3-column, whitespace-delimited mapping. One mapping per
           # line:
           # <regex path-to-test> <parameter-to-set> <value-of-pipeline-parameter>
           mapping: |
-            .*\.go run-go-test true
+            ^.*\.go$ run-go-test true
           base-revision: main
           # this is the path of the configuration we should trigger once
           # path filtering and pipeline parameter value updates are
