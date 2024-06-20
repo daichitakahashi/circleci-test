@@ -18,7 +18,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Insstall Firebase Emulator
+          name: Install Firebase Emulator
           command: curl -sL firebase.tools | bash
       - restore_cache:
           name: Restore Go caches
