@@ -44,8 +44,8 @@ jobs:
           name: Save Go caches
           key: go-dependencies-{{ checksum "~/test/go.sum" }}
           paths:
-            - /home/circleci/go/pkg/mod # GOMODCACHE (module cache)
-            - /home/circleci/.cache/go-build # GOCACHE (build cache)
+            - ~/go/pkg/mod # GOMODCACHE (module cache)
+            - ~/.cache/go-build # GOCACHE (build cache)
       - store_artifacts:
           path: ~/test/coverage.html
       - store_test_results:
