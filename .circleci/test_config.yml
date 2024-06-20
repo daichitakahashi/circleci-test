@@ -17,37 +17,38 @@ jobs:
           MYSQL_DATABASE: test
     steps:
       - checkout
+      - run:
+          name: Insstall Firebase Emulator
+          command: curl -sL firebase.tools | bash
       - restore_cache:
           name: Restore Go caches
           keys:
-            - go-dependencies-{{ checksum "go.sum" }}
-      - run:
-          name: Install Firebase Emulator
-          command: curl -sL firebase.tools | bash
+            - go-dependencies-{{ checksum "~/project/target/go.sum" }}
       - run:
           name: Go mod download
           command: go mod download
-      - run:
-          name: Install dockerize
-          command: curl -L https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-amd64-v0.7.0.tar.gz | tar xzf -
+          working_directory: ~/project/target
       - run:
           name: Wait for MySQL
-          command: ./dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
+          command: |
+            curl -L https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-amd64-v0.7.0.tar.gz | tar xzf -
+            ./dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
       - run:
           name: Go test
           command: ./test-ci.sh
+          working_directory: ~/project/target
           environment:
             DSN: root:password@tcp(127.0.0.1:3306)/
       - save_cache:
           name: Save Go caches
-          key: go-dependencies-{{ checksum "go.sum" }}
+          key: go-dependencies-{{ checksum "~/project/target/go.sum" }}
           paths:
-            - /home/circleci/go/pkg/mod # GOMODCACHE (module cache)
-            - /home/circleci/.cache/go-build # GOCACHE (build cache)
+            - ~/go/pkg/mod # GOMODCACHE (module cache)
+            - ~/.cache/go-build # GOCACHE (build cache)
       - store_artifacts:
-          path: coverage.html
+          path: ~/project/target/coverage.html
       - store_test_results:
-          path: test-results.xml
+          path: ~/project/target/test-results.xml
 
 workflows:
   example:
