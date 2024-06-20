@@ -16,7 +16,8 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: test
     steps:
-      - checkout
+      - checkout:
+          path: ~/test
       - run:
           name: Install Firebase Emulator
           command: curl -sL firebase.tools | bash
@@ -27,6 +28,7 @@ jobs:
       - run:
           name: Go mod download
           command: go mod download
+          working_directory: ~/test
       - run:
           name: Wait for MySQL
           command: |
@@ -35,6 +37,7 @@ jobs:
       - run:
           name: Go test
           command: ./test-ci.sh
+          working_directory: ~/test
           environment:
             DSN: root:password@tcp(127.0.0.1:3306)/
       - save_cache:
@@ -44,9 +47,9 @@ jobs:
             - /home/circleci/go/pkg/mod # GOMODCACHE (module cache)
             - /home/circleci/.cache/go-build # GOCACHE (build cache)
       - store_artifacts:
-          path: coverage.html
+          path: ~/test/coverage.html
       - store_test_results:
-          path: test-results.xml
+          path: ~/test/test-results.xml
 
 workflows:
   example:
