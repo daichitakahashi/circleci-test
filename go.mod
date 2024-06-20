@@ -2,7 +2,10 @@ module circleci-test
 
 go 1.22.4
 
-require github.com/k1LoW/runn v0.112.4
+require (
+	github.com/go-sql-driver/mysql v1.8.1
+	github.com/k1LoW/runn v0.112.4
+)
 
 require (
 	cloud.google.com/go v0.113.0 // indirect
@@ -48,7 +51,6 @@ require (
 	github.com/fullstorydev/grpcurl v1.8.9 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect
 	github.com/gobwas/ws v1.3.2 // indirect
