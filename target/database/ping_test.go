@@ -13,6 +13,8 @@ func TestPing(t *testing.T) {
 		log.Fatal("DSN not set")
 	}
 
+	//
+
 	err := Ping(context.Background(), dsn)
 	if err != nil {
 		t.Fatal(err)
