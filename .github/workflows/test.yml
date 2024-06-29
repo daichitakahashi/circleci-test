@@ -15,4 +15,4 @@ jobs:
         - name: WebHook
           run: curl ${CIRCLECI_WEBHOOK}
           env:
-            CIRCLECI_WEBHOOK: ${{ CIRCLECI_WEBHOOK }}
+            CIRCLECI_WEBHOOK: ${{ secrets.CIRCLECI_WEBHOOK }}
