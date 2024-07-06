@@ -19,7 +19,7 @@ jobs:
           command: git checkout `echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref`
       - persist_to_workspace:
           root: .
-          path: .
+          path: ./*
 
 workflows:
   always-run:
