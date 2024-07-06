@@ -18,7 +18,7 @@ jobs:
           name: Checkout trigger branch
           command: git checkout `echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref`
       - persist_to_workspace:
-          root: /root
+          root: ~/
           path: project
 
 workflows:
@@ -39,4 +39,3 @@ workflows:
           # complete. In this case, we are using the parent dynamic
           # configuration itself.
           config-path: .circleci/test_config.yml
-
