@@ -8,7 +8,7 @@ import (
 )
 
 func TestPing(t *testing.T) {
-	t.Fatal("intentional failure!")
+	// t.Fatal("intentional failure!")
 
 	dsn := os.Getenv("DSN")
 	if dsn == "" {
