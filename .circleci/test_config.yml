@@ -16,9 +16,10 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: test
     steps:
-      # - checkout MEMO:
-      - attach_workspace:
-          at: ~/
+      - checkout
+      - run:
+          name: Checkout trigger branch
+          command: git checkout `echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref`
       - run:
           name: Install Firebase Emulator
           command: curl -sL firebase.tools | bash
