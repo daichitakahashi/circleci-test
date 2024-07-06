@@ -13,7 +13,7 @@ jobs:
       - checkout
       - run:
           name: Check trigger branch
-          command: echo << pipesline.trigger_parameters.webhook.body.ref >>
+          command: echo << pipeline.trigger_parameters.webhook.body.ref >>
       - run:
           name: Checkout trigger branch
           command: git checkout << pipeline.trigger_parameters.webhook.body.ref >>
