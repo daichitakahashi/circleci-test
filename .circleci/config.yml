@@ -13,10 +13,10 @@ jobs:
       - checkout
       - run:
           name: Check trigger branch
-          command: echo << pipeline.trigger_parameters.webhook.body >> | jq .ref
+          command: echo '<< pipeline.trigger_parameters.webhook.body >>' | jq .ref
       - run:
           name: Checkout trigger branch
-          command: git checkout `echo << pipeline.trigger_parameters.webhook.body >> | jq .ref`
+          command: git checkout `echo '<< pipeline.trigger_parameters.webhook.body >>' | jq .ref`
       - persist_to_workspace:
           root: .
           path: .
