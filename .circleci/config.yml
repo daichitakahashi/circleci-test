@@ -17,14 +17,16 @@ jobs:
       - run:
           name: Checkout trigger branch
           command: git checkout `echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref`
-      - attach_workspace:
-          at: ~/
+      - persist_to_workspace:
+          root: /root
+          path: project
 
 workflows:
   always-run:
     jobs:
       - checkout-branch
       - path-filtering/filter:
+          requires: [checkout-branch]
           name: check-updated-go-files
           # 3-column, whitespace-delimited mapping. One mapping per
           # line:
