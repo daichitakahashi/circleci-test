@@ -13,9 +13,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Set Webhook payloads as parameters
+          name: Save Webhook payloads as parameters
           command: |
             echo '<< pipeline.trigger_parameters.webhook.body >>' > ~/parameters.json
+      - run:
+          name: Check saved parameters
+          command: cat ~/parameters.json
       - continuation/continue:
           configuration_path: .circleci/test_config.yml
           parameters: ~/parameters.json

@@ -25,7 +25,7 @@ jobs:
       - checkout
       - run:
           name: Checkout trigger branch
-          command: git checkout `echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref`
+          command: git checkout << pipeline.parameters.ref >>
       - run:
           name: Install Firebase Emulator
           command: curl -sL firebase.tools | bash
