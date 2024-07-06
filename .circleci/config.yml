@@ -12,10 +12,6 @@ jobs:
     executor: continuation/default
     steps:
       - checkout
-      - run:
-          name: Save Webhook payloads as parameters
-          command: |
-            echo '<< pipeline.trigger_parameters.webhook.body >>' > ~/parameters.json
       - continuation/continue:
           configuration_path: .circleci/test_config.yml
           parameters: << pipeline.trigger_parameters.webhook.body >>
