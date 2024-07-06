@@ -12,6 +12,9 @@ jobs:
     executor: continuation/default
     steps:
       - checkout
+      - run:
+          name: Check openssl
+          command: which openssl
       - continuation/continue:
           configuration_path: .circleci/test_config.yml
           parameters: << pipeline.trigger_parameters.webhook.body >>
