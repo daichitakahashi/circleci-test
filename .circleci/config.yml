@@ -2,37 +2,49 @@ version: 2.1
 
 setup: true
 
-orbs:
-  path-filtering: circleci/path-filtering@1.0.0
+# orbs:
+#   path-filtering: circleci/path-filtering@1.0.0
 
 jobs:
-  checkout-branch:
-    machine:
-      image: ubuntu-2204:2024.05.1
+  check-payload:
+    machine: ubuntu-2204:2024.05.1
     steps:
-      - checkout
       - run:
-          name: Check trigger branch
-          command: echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref
-      - run:
-          name: Checkout trigger branch
-          command: git checkout `echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref`
+          name: Check payload
+          command: echo << pipeline.trigger_parameters.webhook.body >>
 
 workflows:
-  always-run:
-    jobs:
-      - checkout-branch
-      - path-filtering/filter:
-          requires: [checkout-branch]
-          name: check-updated-go-files
-          # 3-column, whitespace-delimited mapping. One mapping per
-          # line:
-          # <regex path-to-test> <parameter-to-set> <value-of-pipeline-parameter>
-          mapping: |
-            ^target/.*$ run-go-test true
-          # base-revision: main
-          # this is the path of the configuration we should trigger once
-          # path filtering and pipeline parameter value updates are
-          # complete. In this case, we are using the parent dynamic
-          # configuration itself.
-          config-path: .circleci/test_config.yml
+  test:
+    jobs: 
+      - check-payload
+
+#   checkout-branch:
+#     machine:
+#       image: ubuntu-2204:2024.05.1
+#     steps:
+#       - checkout
+#       - run:
+#           name: Check trigger branch
+#           command: echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref
+#       - run:
+#           name: Checkout trigger branch
+#           command: git checkout `echo '<< pipeline.trigger_parameters.webhook.body >>' | jq -r .ref`
+
+# workflows:
+#   always-run:
+#     jobs:
+#       - checkout-branch
+#       - path-filtering/filter:
+#           requires: [checkout-branch]
+#           name: check-updated-go-files
+#           # 3-column, whitespace-delimited mapping. One mapping per
+#           # line:
+#           # <regex path-to-test> <parameter-to-set> <value-of-pipeline-parameter>
+#           mapping: |
+#             ^target/.*$ run-go-test true
+#           # base-revision: main
+#           # this is the path of the configuration we should trigger once
+#           # path filtering and pipeline parameter value updates are
+#           # complete. In this case, we are using the parent dynamic
+#           # configuration itself.
+#           config-path: .circleci/test_config.yml
