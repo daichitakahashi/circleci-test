@@ -17,6 +17,8 @@ jobs:
       - run:
           name: Checkout trigger branch
           command: git checkout << pipeline.trigger_parameters.webhook.body.ref >>
+      - persist_to_workspace:
+          root: .
 
 workflows:
   always-run:
