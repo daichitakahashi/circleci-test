@@ -14,6 +14,6 @@ jobs:
     steps:
         - name: WebHook
           run: |
-            curl -X POST -H "Content-Type: aplication/json" -d '{"ref":"${{ github.head_ref }}"}' ${CIRCLECI_WEBHOOK}
+            curl -X POST -H "Content-Type: application/json" -d '{"ref":"${{ github.head_ref }}"}' ${CIRCLECI_WEBHOOK}
           env:
             CIRCLECI_WEBHOOK: ${{ secrets.CIRCLECI_WEBHOOK }}
