@@ -1,7 +1,13 @@
 version: 2.1
 
 parameters:
-  run-go-test:
+  ref:
+    type: string
+    default: ""
+  checkId:
+    type: string
+    default: ""
+  testTarget:
     type: boolean
     default: false
 
@@ -55,16 +61,6 @@ jobs:
 
 workflows:
   example:
-    when: << pipeline.parameters.run-go-test >>
+    when: << pipeline.parameters.testTarget >>
     jobs:
       - test
-          # filters:
-          #   branches:
-          #     only:
-          #       - main
-      # - build:
-      #     requires:
-      #       - test
-      # - deploy:
-      #     requires:
-      #       - test
