@@ -5,9 +5,25 @@ setup: true
 orbs:
   path-filtering: circleci/path-filtering@1.0.0
 
+jobs:
+  checkout-branch:
+    machine:
+      image: ubuntu-2204:2024.05.1
+    steps:
+      - checkout
+      - run:
+          name: Check trigger branch
+          command: echo << pipesline.trigger_parameters.webhook.body.ref >>
+      - run:
+          name: Checkout trigger branch
+          command: git checkout << pipeline.trigger_parameters.webhook.body.ref >>
+      - persist_to_workspace:
+          root: .
+
 workflows:
   always-run:
     jobs:
+      - checkout-branch
       - path-filtering/filter:
           name: check-updated-go-files
           # 3-column, whitespace-delimited mapping. One mapping per
@@ -15,7 +31,7 @@ workflows:
           # <regex path-to-test> <parameter-to-set> <value-of-pipeline-parameter>
           mapping: |
             ^target/.*$ run-go-test true
-          base-revision: main
+          # base-revision: main
           # this is the path of the configuration we should trigger once
           # path filtering and pipeline parameter value updates are
           # complete. In this case, we are using the parent dynamic

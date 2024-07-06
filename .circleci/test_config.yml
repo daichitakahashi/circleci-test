@@ -16,7 +16,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: test
     steps:
-      - checkout
+      # - checkout MEMO:
       - run:
           name: Install Firebase Emulator
           command: curl -sL firebase.tools | bash
