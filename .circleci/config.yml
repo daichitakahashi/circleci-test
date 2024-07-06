@@ -4,20 +4,26 @@ setup: true
 
 # orbs:
 #   path-filtering: circleci/path-filtering@1.0.0
+orbs:
+  continuation: circleci/continuation@1.0.0
 
 jobs:
-  check-payload:
-    machine:
-      image: ubuntu-2204:2024.05.1
+  setup-test:
+    executor: continuation/default
     steps:
+      - checkout
       - run:
-          name: Check payload
-          command: echo '<< pipeline.trigger_parameters.webhook.body >>'
+          name: Set Webhook payloads as parameters
+          command: |
+            echo '<< pipeline.trigger_parameters.webhook.body >>' > ~/parameters.json
+      - continuation/continue:
+          configuration_path: .circleci/test_config.yml
+          parameters: ~/parameters.json
 
 workflows:
   test:
-    jobs: 
-      - check-payload
+    jobs:
+      - setup-test
 
 #   checkout-branch:
 #     machine:
