@@ -7,7 +7,8 @@ setup: true
 
 jobs:
   check-payload:
-    machine: ubuntu-2204:2024.05.1
+    machine:
+      image: ubuntu-2204:2024.05.1
     steps:
       - run:
           name: Check payload
